@@ -5,8 +5,8 @@
 ; Tuned for a 72V pack on a Ubox.
 ;   - Original profile: stock eco/drive/sport limits (unchanged from upstream).
 ;   - Race profile: eco = highest speed cap / max power, 20A field weakening;
-;                    drive = capped at ~35 km/h, 20A field weakening;
-;                    sport = capped at ~45-50 km/h, 20A field weakening.
+;                    drive = capped at ~35 km/h, no field weakening;
+;                    sport = capped at ~45-50 km/h, no field weakening.
 ; Switch profiles by double-pressing the button while holding brake AND throttle
 ; at the same time (this toggles the existing "unlock" state -> Race profile).
 ; NOTE: battery voltage/cutoffs for the 72V pack are NOT set here - configure
@@ -97,11 +97,12 @@
 ;     wiring loom.
 ;
 ; v1.9 changes:
-;   - Race profile now runs 20A field weakening (race-*-fw 0 -> 20) in all
-;     three sub-modes, instead of none. Lets the motor spin past its normal
-;     back-EMF ceiling to actually reach the higher race-mode speed caps,
-;     at the cost of some extra heat/efficiency - keep an eye on
-;     temp-warning-motor/temp-warning-fet if you push it hard.
+;   - Race-eco now runs 20A field weakening (race-eco-fw 0 -> 20).
+;     Race-drive and race-sport are untouched (still no field weakening).
+;     Lets the motor spin past its normal back-EMF ceiling in race-eco to
+;     actually reach its wide-open speed cap, at the cost of some extra
+;     heat/efficiency - keep an eye on temp-warning-motor/temp-warning-fet
+;     if you push it hard.
 
 ; -> Installation
 ; UART Wiring: red=5V black=GND yellow=COM-TX (UART-HDX) green=COM-RX (button)+3.3V with 1K Resistor
@@ -141,11 +142,11 @@
 (def race-drive-speed (/ 35 3.6))
 (def race-drive-current 1.0)
 (def race-drive-watts 100000) ; watt ceiling opened up - speed cap above is what actually limits this mode
-(def race-drive-fw 20) ; 20A field weakening
+(def race-drive-fw 0) ; no field weakening
 (def race-sport-speed (/ 48 3.6)) ; chill 45-50 km/h, adjust to taste
 (def race-sport-current 1.0)
 (def race-sport-watts 100000) ; watt ceiling opened up - speed cap above is what actually limits this mode
-(def race-sport-fw 20) ; 20A field weakening
+(def race-sport-fw 0) ; no field weakening
 
 ; -> Code starts here (DO NOT CHANGE ANYTHING BELOW THIS LINE IF YOU DON'T KNOW WHAT YOU ARE DOING)
 
